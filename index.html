@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Shodhganga – Combined Search Validation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #5a3fdd, #ff5f8e);
+            --card-bg: rgba(255, 255, 255, 0.94);
+            --accent: #7b2ff7;
+            --accent-dark: #4b0fa0;
+            --heading-color: #1c144d;
+            --text-color: #2e2e48;
+            --label-color: #3d3d63;
+            --placeholder-color: #8888aa;
+            --error: #d93025;
+            --success: #0f9d58;
+            --border-light: rgba(255, 255, 255, 0.7);
+            --shadow-soft: 0 22px 48px rgba(0, 0, 0, 0.28);
+            --radius-lg: 20px;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: "Poppins", "Nunito", sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg-gradient);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wrapper {
+            padding: 24px;
+            width: 100%;
+            max-width: 1080px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 34px 38px 36px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-soft);
+            border: 1px solid var(--border-light);
+        }
+
+        h2 {
+            margin: 0;
+            text-align: center;
+            font-weight: 700;
+            font-size: 28px;
+            color: var(--heading-color);
+        }
+
+        .subtitle {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #4a4a6a;
+        }
+
+        .section-header {
+            margin-top: 18px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #5b4b9a;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 16px;
+            margin-bottom: 16px;
+        }
+
+        .radio-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            border: 1px solid rgba(123, 47, 247, 0.4);
+            background: #ffffff;
+            font-size: 13px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #3a276f;
+            transition: 0.18s;
+        }
+
+        .radio-pill input[type="radio"] {
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+
+        .radio-pill:hover {
+            background: #f2e9ff;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px 22px;
+        }
+
+        @media (max-width: 780px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        label {
+            font-weight: 600;
+            color: var(--label-color);
+        }
+
+        .required {
+            color: var(--error);
+            font-weight: 900;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            border-radius: 12px;
+            border: 1px solid #bfbfdf;
+            padding: 10px 12px;
+            font-size: 14px;
+            outline: none;
+            background: #fff;
+            transition: 0.2s;
+        }
+
+        input::placeholder {
+            color: var(--placeholder-color);
+        }
+
+        input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(123, 47, 247, 0.2);
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 32px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #7b2ff7, #ff4db2);
+            border: none;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+            font-weight: 700;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #resultBox {
+            margin-top: 20px;
+            padding: 14px;
+            border-radius: 14px;
+            display: none;
+            font-size: 14px;
+            line-height: 1.55;
+        }
+
+        #resultBox.pass {
+            background: rgba(15, 157, 88, 0.1);
+            border: 1px solid #0f9d58;
+            color: #0b7a3f;
+        }
+
+        #resultBox.fail {
+            background: rgba(217, 48, 37, 0.1);
+            border: 1px solid #d93025;
+            color: #8b1a12;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="wrapper">
+    <div class="card">
+        <h2>Shodhganga Search – Validation Test</h2>
+        <div class="subtitle">
+            Advanced, Subject and Google searches share the same strict validation rules.
+        </div>
+
+        <!-- SEARCH TYPE SELECTION -->
+        <div class="section-header">Search Type</div>
+        <div class="radio-group">
+            <label class="radio-pill">
+                <input type="radio" name="stype" value="advanced" checked>
+                <span>Advanced Search</span>
+            </label>
+            <label class="radio-pill">
+                <input type="radio" name="stype" value="subject">
+                <span>Subject Search</span>
+            </label>
+            <label class="radio-pill">
+                <input type="radio" name="stype" value="google">
+                <span>Google Search</span>
+            </label>
+        </div>
+
+        <!-- COMMON FORM FOR ALL THREE TYPES (same validations) -->
+        <div class="form-grid">
+
+            <div class="form-row">
+                <label>Subject <span class="required">*</span></label>
+                <input type="text" id="subject">
+            </div>
+
+            <div class="form-row">
+                <label>University <span class="required">*</span></label>
+                <input type="text" id="university">
+            </div>
+
+            <div class="form-row">
+                <label>Department <span class="required">*</span></label>
+                <input type="text" id="department">
+            </div>
+
+            <div class="form-row">
+                <label>Upload Year <span class="required">*</span></label>
+                <input type="number" id="uploadYear" placeholder="2000 - 2025">
+            </div>
+
+            <div class="form-row">
+                <label>Researcher / Guide <span class="required">*</span></label>
+                <input type="text" id="researcher">
+            </div>
+
+            <div class="form-row">
+                <label>Title <span class="required">*</span></label>
+                <input type="text" id="title">
+            </div>
+
+            <div class="form-row">
+                <label>Keyword <span class="required">*</span></label>
+                <input type="text" id="keyword">
+            </div>
+
+            <div class="form-row">
+                <label>Handle No. <span class="required">*</span></label>
+                <input type="text" id="handleNo" placeholder="6-digit ID">
+            </div>
+
+        </div>
+
+        <button onclick="validateSearch()">Run Test</button>
+
+        <div id="resultBox"></div>
+    </div>
+</div>
+
+<script>
+function validateSearch() {
+    const type = document.querySelector('input[name="stype"]:checked').value;
+
+    const subject    = document.getElementById("subject").value.trim();
+    const university = document.getElementById("university").value.trim();
+    const department = document.getElementById("department").value.trim();
+    const uploadYear = document.getElementById("uploadYear").value.trim();
+    const researcher = document.getElementById("researcher").value.trim();
+    const title      = document.getElementById("title").value.trim();
+    const keyword    = document.getElementById("keyword").value.trim();
+    const handleNo   = document.getElementById("handleNo").value.trim();
+
+    const lettersOnly = /^[A-Za-z ]+$/;
+    const errors = [];
+    const resultBox = document.getElementById("resultBox");
+
+    function checkText(value, fieldName) {
+        if (!lettersOnly.test(value)) {
+            if (/\d/.test(value)) {
+                errors.push(fieldName + ": Numbers not allowed.");
+            } else {
+                errors.push(fieldName + ": Special characters not allowed.");
+            }
+        }
+    }
+
+    // Empty checks (same for all three search types)
+    if (!subject)    errors.push("Subject cannot be empty.");
+    if (!university) errors.push("University cannot be empty.");
+    if (!department) errors.push("Department cannot be empty.");
+    if (!uploadYear) errors.push("Upload Year cannot be empty.");
+    if (!researcher) errors.push("Researcher / Guide cannot be empty.");
+    if (!title)      errors.push("Title cannot be empty.");
+    if (!keyword)    errors.push("Keyword cannot be empty.");
+    if (!handleNo)   errors.push("Handle No. cannot be empty.");
+
+    // Character-only validations
+    if (subject)    checkText(subject, "Subject");
+    if (university) checkText(university, "University");
+    if (department) checkText(department, "Department");
+    if (researcher) checkText(researcher, "Researcher / Guide");
+    if (title)      checkText(title, "Title");
+    if (keyword)    checkText(keyword, "Keyword");
+
+    // Year validation
+    if (uploadYear) {
+        const y = Number(uploadYear);
+        if (isNaN(y) || y < 2000 || y > 2025) {
+            errors.push("Upload Year must be between 2000 and 2025.");
+        }
+    }
+
+    // Handle No. validation (6-digit numeric)
+    if (handleNo) {
+        if (!/^\d+$/.test(handleNo)) {
+            errors.push("Handle No. must contain digits only.");
+        }
+        if (handleNo.length !== 6) {
+            errors.push("Handle No. must be exactly 6 digits.");
+        }
+    }
+
+    if (errors.length === 0) {
+        resultBox.className = "pass";
+        resultBox.innerHTML =
+            "<b>TEST PASSED – " + type.toUpperCase() + " SEARCH</b><br>" +
+            "All validations cleared for " + type.toUpperCase() + " Search.";
+    } else {
+        resultBox.className = "fail";
+        resultBox.innerHTML =
+            "<b>TEST FAILED – " + type.toUpperCase() + " SEARCH</b><br>" +
+            errors.join("<br>");
+    }
+
+    resultBox.style.display = "block";
+}
+</script>
+
+</body>
+</html>
