@@ -224,17 +224,37 @@
 
             <div class="form-row">
                 <label>Subject <span class="required">*</span></label>
-                <input type="text" id="subject">
+                <select id="subject">
+                    <option value="" disabled selected>Select a Subject</option>
+                    <option value="AI">AI</option>
+                    <option value="ML">ML</option>
+                    <option value="Computer science">Computer science</option>
+                    <option value="software engineering">software engineering</option>
+                </select>
             </div>
 
             <div class="form-row">
-                <label>University <span class="required">*</span></label>
-                <input type="text" id="university">
+<label>University <span class="required">*</span></label>
+<select id="university">
+    <option value="" disabled selected>Select a University</option>
+    <option value="vignan university">Vignan University</option>
+    <option value="mumbai university">Mumbai University</option>
+    <option value="kl university">KL University</option>
+    <option value="vvit university">VVIT University</option>
+</select>
             </div>
 
             <div class="form-row">
                 <label>Department <span class="required">*</span></label>
-                <input type="text" id="department">
+                <select id="department">
+                    <option value="" disabled selected>Select Department</option>
+                    <option value="AI and ML">AI and ML</option>
+                    <option value="ADS">ADS</option>
+                    <option value="IT">IT</option>
+                    <option value="MCA">MCA</option>
+                    <option value="BCA">BCA</option>
+                    <option value="CSE">CSE</option>
+                </select>
             </div>
 
             <div class="form-row">
@@ -271,82 +291,81 @@
 </div>
 
 <script>
-function validateSearch() {
-    const type = document.querySelector('input[name="stype"]:checked').value;
+    function validateSearch() {
+        const type = document.querySelector('input[name="stype"]:checked').value;
 
-    const subject    = document.getElementById("subject").value.trim();
-    const university = document.getElementById("university").value.trim();
-    const department = document.getElementById("department").value.trim();
-    const uploadYear = document.getElementById("uploadYear").value.trim();
-    const researcher = document.getElementById("researcher").value.trim();
-    const title      = document.getElementById("title").value.trim();
-    const keyword    = document.getElementById("keyword").value.trim();
-    const handleNo   = document.getElementById("handleNo").value.trim();
+        const subject    = document.getElementById("subject").value;
+        const university = document.getElementById("university").value.trim();
+        const department = document.getElementById("department").value;
+        const uploadYear = document.getElementById("uploadYear").value.trim();
+        const researcher = document.getElementById("researcher").value.trim();
+        const title      = document.getElementById("title").value.trim();
+        const keyword    = document.getElementById("keyword").value.trim();
+        const handleNo   = document.getElementById("handleNo").value.trim();
 
-    const lettersOnly = /^[A-Za-z ]+$/;
-    const errors = [];
-    const resultBox = document.getElementById("resultBox");
+        const lettersOnly = /^[A-Za-z ]+$/;
+        const errors = [];
+        const resultBox = document.getElementById("resultBox");
 
-    function checkText(value, fieldName) {
-        if (!lettersOnly.test(value)) {
-            if (/\d/.test(value)) {
-                errors.push(fieldName + ": Numbers not allowed.");
-            } else {
-                errors.push(fieldName + ": Special characters not allowed.");
+        function checkText(value, fieldName) {
+            if (!lettersOnly.test(value)) {
+                if (/\d/.test(value)) {
+                    errors.push(fieldName + ": Numbers not allowed.");
+                } else {
+                    errors.push(fieldName + ": Special characters not allowed.");
+                }
             }
         }
-    }
 
-    // Empty checks (same for all three search types)
-    if (!subject)    errors.push("Subject cannot be empty.");
-    if (!university) errors.push("University cannot be empty.");
-    if (!department) errors.push("Department cannot be empty.");
-    if (!uploadYear) errors.push("Upload Year cannot be empty.");
-    if (!researcher) errors.push("Researcher / Guide cannot be empty.");
-    if (!title)      errors.push("Title cannot be empty.");
-    if (!keyword)    errors.push("Keyword cannot be empty.");
-    if (!handleNo)   errors.push("Handle No. cannot be empty.");
+        // Empty checks (same for all three search types)
+        if (!subject)    errors.push("Subject cannot be empty.");
+        if (!university) errors.push("University cannot be empty.");
+        if (!department) errors.push("Department cannot be empty.");
+        if (!uploadYear) errors.push("Upload Year cannot be empty.");
+        if (!researcher) errors.push("Researcher / Guide cannot be empty.");
+        if (!title)      errors.push("Title cannot be empty.");
+        if (!keyword)    errors.push("Keyword cannot be empty.");
+        if (!handleNo)   errors.push("Handle No. cannot be empty.");
 
-    // Character-only validations
-    if (subject)    checkText(subject, "Subject");
-    if (university) checkText(university, "University");
-    if (department) checkText(department, "Department");
-    if (researcher) checkText(researcher, "Researcher / Guide");
-    if (title)      checkText(title, "Title");
-    if (keyword)    checkText(keyword, "Keyword");
+        // Character-only validations (exclude for subject as it's from dropdown)
+        if (university) checkText(university, "University");
+        if (department) checkText(department, "Department");
+        if (researcher) checkText(researcher, "Researcher / Guide");
+        if (title)      checkText(title, "Title");
+        if (keyword)    checkText(keyword, "Keyword");
 
-    // Year validation
-    if (uploadYear) {
-        const y = Number(uploadYear);
-        if (isNaN(y) || y < 2000 || y > 2025) {
-            errors.push("Upload Year must be between 2000 and 2025.");
+        // Year validation
+        if (uploadYear) {
+            const y = Number(uploadYear);
+            if (isNaN(y) || y < 2000 || y > 2025) {
+                errors.push("Upload Year must be between 2000 and 2025.");
+            }
         }
-    }
 
-    // Handle No. validation (6-digit numeric)
-    if (handleNo) {
-        if (!/^\d+$/.test(handleNo)) {
-            errors.push("Handle No. must contain digits only.");
+        // Handle No. validation (6-digit numeric)
+        if (handleNo) {
+            if (!/^\d+$/.test(handleNo)) {
+                errors.push("Handle No. must contain digits only.");
+            }
+            if (handleNo.length !== 6) {
+                errors.push("Handle No. must be exactly 6 digits.");
+            }
         }
-        if (handleNo.length !== 6) {
-            errors.push("Handle No. must be exactly 6 digits.");
+
+        if (errors.length === 0) {
+            resultBox.className = "pass";
+            resultBox.innerHTML =
+                "<b>TEST PASSED – " + type.toUpperCase() + " SEARCH</b><br>" +
+                "All validations cleared for " + type.toUpperCase() + " Search.";
+        } else {
+            resultBox.className = "fail";
+            resultBox.innerHTML =
+                "<b>TEST FAILED – " + type.toUpperCase() + " SEARCH</b><br>" +
+                errors.join("<br>");
         }
-    }
 
-    if (errors.length === 0) {
-        resultBox.className = "pass";
-        resultBox.innerHTML =
-            "<b>TEST PASSED – " + type.toUpperCase() + " SEARCH</b><br>" +
-            "All validations cleared for " + type.toUpperCase() + " Search.";
-    } else {
-        resultBox.className = "fail";
-        resultBox.innerHTML =
-            "<b>TEST FAILED – " + type.toUpperCase() + " SEARCH</b><br>" +
-            errors.join("<br>");
+        resultBox.style.display = "block";
     }
-
-    resultBox.style.display = "block";
-}
 </script>
 
 </body>
